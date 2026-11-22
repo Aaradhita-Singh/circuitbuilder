@@ -11,8 +11,25 @@ let grid = [];
 
 function resetGame() {
   grid = JSON.parse(JSON.stringify(initialLevel));
+  scrambleWires();
   render();
 }
+
+function scrambleWires() {
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 4; c++) {
+      const tile = grid[r][c];
+      if (tile.type === 'wire') {
+        // Pick a random number of clockwise turns (0, 1, 2, or 3)
+        const turns = Math.floor(Math.random() * 4);
+        for (let t = 0; t < turns; t++) {
+          tile.dirs.unshift(tile.dirs.pop());
+        }
+      }
+    }
+  }
+}
+
 
 // Rotate connections clockwise: [Top, Right, Bottom, Left] -> [Left, Top, Right, Bottom]
 function rotateTile(r, c) {
